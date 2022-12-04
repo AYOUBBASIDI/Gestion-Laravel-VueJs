@@ -83,7 +83,9 @@ php artisan serve
 
    - The request body should be in JSON format <br />
    - The request body should contain the following fields exemple: <br />
-     {
+   
+   ```bash
+    {
         "name" : "Admin",
         "role" : "Admin",
         "email" : "admin@gmail",
@@ -91,14 +93,18 @@ php artisan serve
         "password" : "adminadmin",
         "password_confirmation" : "adminadmin"
     }
+    ```
+     
 
 3. Send a POST request to `/api/v1/login` to login a user <br />
    - The request body should be in JSON format <br />
    - The request body should contain the following fields exemple: <br />
+    ```bash
      {
         "username" : "admin",
         "password" : "adminadmin"
       }
+     ```
 
 ## Pictures from Live Application
 

@@ -100,6 +100,27 @@ php artisan serve
         "password" : "adminadmin"
       }
 
+## Pictures from Live Application
+
+- SignIn Page :
+
+![Agents Page](https://github.com/AYOUBBASIDI/Gestion-Laravel-VueJs/blob/main/frontend/public/images/3.png)
+
+
+- Agents Page :
+
+![Agents Page](https://github.com/AYOUBBASIDI/Gestion-Laravel-VueJs/blob/main/frontend/public/images/1.png)
+
+
+- Dashboard Page:
+
+![Agents Page](https://github.com/AYOUBBASIDI/Gestion-Laravel-VueJs/blob/main/frontend/public/images/2.png)
+
+
+- Parcelles Page:
+
+![Agents Page](https://github.com/AYOUBBASIDI/Gestion-Laravel-VueJs/blob/main/frontend/public/images/4.png)
+
 ## Author
 
 - [Ayoub Bsd](https://github.com/AYOUBBASIDI "Ayoub Basidi")

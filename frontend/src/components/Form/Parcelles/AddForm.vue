@@ -3,7 +3,19 @@
     <div v-if="popup" class="absolute top-0 w-2/5 p-1 bg-white dark:bg-dark-header rounded-2xl flex content-center justify-center pt-5" style="left: 25%; top: 3%;">
             <ParentTransition appear :visibility="true" class="w-4/5">
 
-            <form v-on:submit.prevent="add_Parcelle">
+                <FormKit type="form" v-model="data" @submit="add_Parcelle"
+                submit-label="Save"
+                :submit-attrs="{
+                    inputClass: 'hidden',
+                }"
+                :config="{
+                classes: {
+                    input: 'focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200',
+                    help: 'text-xs text-gray-500',
+                    message: 'text-red-500 text-xs',
+                },
+                }"
+                >
                 <div class="space-y-6 flex flex-col gap-y-2 content-center justify-center py-5">
                     
                     <h1 class="dark dark:text-gray-400 text-center text-xl font-bold leading-7 sm:text-2xl sm:truncate">Add New Parcelle</h1>
@@ -12,30 +24,38 @@
                     <div>
                         <BaseLabel>Numéro</BaseLabel>
                         <div class="mt-1">
-                            <input
-                                type="number" 
-                                name="numero" 
-                                label="Numéro" 
+                            <FormKit
                                 v-model="form.numero"
-                                autofocus 
-                                class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                                type="number"
+                                name="numero"
+                                validation="required"
                             />
                         </div>
-                        <FormError :error="error" />
+
                     </div>
                     <div style="width: 47%;">
                        <BaseLabel>Nom de village</BaseLabel>
                         <div class="mt-1">
-                            <select 
-                            class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
-                            name="village_id"
-                            v-model="form.village_id"
-                            >
-                                <option hidden selected>Nom de village</option>
-                                <option v-for="item in villages" :value='item.id' >{{item.nom}}</option>
-                            </select>
+                            <FormKit
+                                type="select"
+                                name="village_id"
+                                validation="required"
+                                v-model="form.village_id"
+                                :validation-messages="{
+                                    required: 'Nom de village is required',
+                                }"
+                                >
+                                    <option 
+                                        v-for="item in villages" 
+                                        :value="item.id"
+                                        class="bg-white dark:bg-dark-header"
+                                        >
+                                        {{item.nom}}
+                                    </option>
+                                </FormKit>
+                                <pre wrap>{{ value }}</pre>
                         </div>
-                        <FormError :error="error" /> 
+ 
                     </div>
 
 
@@ -45,16 +65,26 @@
                 <div>
                     <BaseLabel>Numéro d'identité du propriétaire</BaseLabel>
                     <div class="mt-1">
-                        <select 
-                        class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
-                        name="proprietaire_id"
-                        v-model="form.proprietaire_id"
-                        >
-                            <option hidden selected>Numéro d'identité</option>
-                            <option v-for="item in proprietaires" :value="item.id">{{item.numero_identite}}</option>
-                        </select>
+                        <FormKit
+                            type="select"
+                            name="proprietaire_id"
+                            validation="required"
+                            v-model="form.proprietaire_id"
+                            :validation-messages="{
+                                    required: 'proprietaire is required',
+                                }"
+                            >
+                                <option 
+                                    v-for="item in proprietaires" 
+                                    :value="item.id"
+                                    class="bg-white dark:bg-dark-header"
+                                    >
+                                    {{item.numero_identite}}
+                                </option>
+                            </FormKit>
+                            <pre wrap>{{ value }}</pre>
+
                     </div>
-                    <FormError :error="error" />
                 </div> 
                 
                 
@@ -62,50 +92,71 @@
                 <div>
                     <BaseLabel>Date de délimitation</BaseLabel>
                     <div class="mt-1">
-                        <input
+                        <FormKit
                             v-model="form.date_delimitation"
-                            type="date" 
-                            name="date_delimitation" 
-                            autofocus 
-                            class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                            type="date"
+                            name="date_delimitation"
+                            validation="required"
                         />
                     </div>
-                    <FormError :error="error" />
                 </div>
 
 
                 <div>
                     <BaseLabel>Signature</BaseLabel>
                     <div class="mt-1">
-                        <textarea 
-                        v-model="form.signature"
-                        class="rounded-sm border border-gray-600 focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
-                        name="signature" 
-                        rows="4" 
-                        cols="50" 
-                        autofocus
-                        maxlength="200"></textarea>
+                        <FormKit
+                            v-model="form.signature"
+                            type="textarea"
+                            name="signature"
+                            rows="4" 
+                            cols="50" 
+                            validation="required"
+                            :config="{
+                                classes: {
+                                input: 'dark dark:text-gray-200 rounded-sm border border-gray-600 focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700',
+                                message: 'text-red-500 text-xs',
+                                }
+                            }"
+                        />
                     </div>
-                    <FormError :error="error" />
                 </div>
 
-                <div :class="{ hidden: !role }">
+                <div>
                     <BaseLabel>Agent</BaseLabel>
                     <div class="mt-1">
-                        <select v-if="role" v-model="form.user_id"
-                        class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
-                        name="user_id">
-                            <option hidden selected>Agent</option>
-                            <option v-for="item in agents" :value="item.id">{{item.name}}</option>
-                        </select>
-                        <input v-if="!role" v-model="form.user_id" name="user_id"/>
+                        <FormKit
+                        type="select"
+                        name="user_id"
+                        validation="required"
+                        v-model="form.user_id"
+                        >
+                            <option 
+                                v-for="item in agents" 
+                                :value="item.id"
+                                class="bg-white dark:bg-dark-header"
+                                :validation-messages="{
+                                    required: 'Agent is required',
+                                }"
+                                >
+                                {{item.name}}
+                            </option>
+                        </FormKit>
+                        <pre wrap>{{ value }}</pre>
                     </div>
-                    <FormError :error="error" />
                 </div>
-                <BaseButton  block>Save</BaseButton>
+                <BaseButton  block>
+                    <FormKit
+                        type="submit"
+                        label="Save"
+                        :classes="{
+                            input: 'w-full m-0 p-0',
+                        }"
+                    />
+                </BaseButton>
 
         </div>
-            </form>
+            </FormKit>
             </ParentTransition>
             <div v-on:click="closePopup()" class="dark h-0 dark:text-gray-400 cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
@@ -121,12 +172,12 @@ export default {
 
     data(){
         return{
-            role:true,
             user:sessionStorage.getItem('id'),
             popup : true,
             villages :[],
             proprietaires:[],
             agents:[],
+            agentsOption : [],
             form: {
                 user_id : this.user,
                 village_id : null,
@@ -134,15 +185,12 @@ export default {
                 numero : null,
                 date_delimitation : null,
                 signature : ""
-            }
+            },
+            data:null
         }
     },
 
     mounted(){
-        if(sessionStorage.getItem("role") == "Agent"){
-            this.role = false
-        }
-
         // Get Villages
         let options = {
         url: 'http://127.0.0.1:8000/api/v1/getVillages',
@@ -173,7 +221,11 @@ export default {
 
         axios(options)
         .then(response => {
-            this.agents = response.data;
+            // response.data.map((item) => {
+            //     this.agentsOption.push({label:item.name, value:item.id});
+            // })
+            // console.log(this.agentsOption)
+            this.agents = response.data
         });
     },
 
@@ -191,7 +243,7 @@ export default {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json;charset=UTF-8'
                 },
-                data: this.form
+                data: this.data
             };
 
             axios(options)

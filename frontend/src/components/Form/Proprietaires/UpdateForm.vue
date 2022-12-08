@@ -153,6 +153,11 @@
         <i class="fa-solid fa-xmark"></i>
     </div>
 </div>
+
+
+
+
+
 </div>
 </template>
 
@@ -185,6 +190,7 @@ return{
 },
 
 mounted(){
+    this.getOldData(this.props.id);
 },
 
 methods:{
@@ -209,6 +215,32 @@ update_Proprietaire(id){
         this.$router.go();
     });
 
+},
+
+getOldData(id){
+    console.log(id)
+    const options = {
+        url: 'http://127.0.0.1:8000/api/v1/getProprietaire/'+id,
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        data: this.form
+    };
+
+    axios(options)
+    .then(response => {
+        this.form.nom = response.data.nom;
+        console.log(this.form.nom)
+        this.form.prenom = response.data.prenom;
+        this.form.sexe = response.data.sexe;
+        this.form.nationalite = response.data.nationalite;
+        this.form.type_identite = response.data.type_identite;
+        this.form.numero_identite = response.data.numero_identite;
+        this.form.adresse = response.data.adresse;
+        this.form.numero_identite = response.data.numero_identite;
+    });
 }
 }
 }

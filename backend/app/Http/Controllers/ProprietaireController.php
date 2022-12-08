@@ -26,11 +26,25 @@ class ProprietaireController extends Controller
      
     public function newProprietaire(Request $request)
     {
+        // Save Photo in locally folder 
+        if($request->hasFile('src')){
+            $file = $request->file('src');
+            $numero_identite = $request->numero_identite;
+            $file_name = $numero_identite. '_' . $file->getClientOriginalName(); 
+            $file->move(public_path('Photos_identite'), $file_name);
+
+        }else{
+            return response()->json($request->src,400);
+        }
+        
+        // Save data to database
         $input = $request->all();
         $Proprietaire = Proprietaire::create($input);
+        $input['src'] = $file_name;
         $input['proprietaire_id'] = $Proprietaire->id;
         $Photo_identite = Photo_identite::create($input);
 
+        // send response
         $response = [
             'success' => true,
             'message' => "Proprietaire Added succesfully"
@@ -42,6 +56,12 @@ class ProprietaireController extends Controller
     {
         $Proprietaires = Proprietaire::all();
         return $Proprietaires;
+    }
+
+    public function getSpecificProprietaire($id)
+    {
+        $Proprietaire = Proprietaire::find($id);
+        return $Proprietaire;
     }
 
     public function deleteProprietaire($id)

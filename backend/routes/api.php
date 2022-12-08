@@ -40,6 +40,7 @@ Route::put('/v1/updateAgent/{id}', [UserController::class, 'updateAgent']);
 // Parcelles Router
 Route::post('/v1/newParcelle', [ParcelleController::class, 'newParcelle']);
 Route::get('/v1/getParcelles', [ParcelleController::class, 'getParcelles']);
+Route::get('/v1/getParcelle/{id}', [ParcelleController::class, 'getSpecificParcelle']);
 Route::delete('/v1/deleteParcelle/{id}', [ParcelleController::class, 'deleteParcelle']);   
 Route::put('/v1/updateParcelle/{id}', [ParcelleController::class, 'updateParcelle']);
 
@@ -53,6 +54,7 @@ Route::put('/v1/updateVillage/{id}', [VillageController::class, 'updateVillage']
 // proprietaires Router
 Route::post('/v1/newProprietaire', [ProprietaireController::class, 'newProprietaire']);
 Route::get('/v1/getProprietaires', [ProprietaireController::class, 'getProprietaires']);
+Route::get('/v1/getProprietaire/{id}', [ProprietaireController::class, 'getSpecificProprietaire']);
 Route::delete('/v1/deleteProprietaire/{id}', [ProprietaireController::class, 'deleteProprietaire']);   
 Route::put('/v1/updateProprietaire/{id}', [ProprietaireController::class, 'updateProprietaire']);
 

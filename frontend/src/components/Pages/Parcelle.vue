@@ -138,15 +138,19 @@ export default {
         },
 
         DeleteParcelle(id){
-            const options = {
-            url: 'http://127.0.0.1:8000/api/v1/deleteParcelle/'+id,
-            method: 'DELETE',
-            };
+            if (confirm("Are You sure you want to delete this Parcelle") == true) {
+                const options = {
+                url: 'http://127.0.0.1:8000/api/v1/deleteParcelle/'+id,
+                method: 'DELETE',
+                };
 
-            axios(options)
-            .then(response => {
-                this.getParcelles();
-            });
+                axios(options)
+                .then(response => {
+                    this.getParcelles();
+                });
+            } else {
+                text = "You canceled!";
+            }
         },
 
 

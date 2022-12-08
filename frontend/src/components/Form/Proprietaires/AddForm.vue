@@ -78,6 +78,7 @@
                     name="Nationnalité" 
                     autofocus 
                     class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                    required
                 />
             </div>
             <FormError :error="error" />
@@ -96,6 +97,7 @@
                             class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
                             name="type_identite"
                             v-model="form.type_identite"
+                            required
                             >
                                 <option v-for="item in types" :value='item' >{{item}}</option>
                             </select>
@@ -112,6 +114,7 @@
                                 v-model="form.numero_identite"
                                 autofocus 
                                 class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                                required
                             />
                         </div>
                         <FormError :error="error" />
@@ -125,7 +128,11 @@
                     type="file" 
                     name="src" 
                     autofocus 
+                    accept="image/png, image/jpg, image/jpeg"
+                    @change="checkFile()"
+                    ref="file"
                     class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                    required
                 />
             </div>
             <FormError :error="error" />
@@ -140,6 +147,7 @@
                     autofocus 
                     v-model="form.adresse"
                     class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                    required
                 />
             </div>
             <FormError :error="error" />
@@ -172,7 +180,7 @@ return{
         type_identite : null,
         numero_identite : null,
         adresse : null,
-        src : "/images/id1128"
+        src : null
     },
     types:["CIN","Passeport","Permis","Carte de resident"]
 }
@@ -189,21 +197,42 @@ closePopup(){
 },
 
 add_Proprietaire(){
-    const options = {
-        url: 'http://127.0.0.1:8000/api/v1/newProprietaire',
-        method: 'POST',
+    console.log(this.form)
+    var formData = new FormData();
+    formData.append("nom", this.form.nom);
+    formData.append("prenom", this.form.prenom);
+    formData.append("sexe", this.form.sexe);
+    formData.append("nationalite", this.form.nationalite);
+    formData.append("type_identite", this.form.type_identite);
+    formData.append("adresse", this.form.adresse);
+    formData.append("numero_identite", this.form.numero_identite);
+    formData.append("src", this.form.src);
+    axios.post('http://127.0.0.1:8000/api/v1/newProprietaire', formData, {
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
-        },
-        data: this.form
-    };
-
-    axios(options)
+        'Content-Type': 'multipart/form-data'
+        }
+    })
     .then(response => {
         this.$router.go();
     });
-}
+},
+
+checkFile(){
+    this.form.src = this.$refs.file.files[0];
+    const type = this.form.src.type;
+    const size = this.form.src.size;
+    if(type != "image/png" && type != "image/jpg" && type != "image/jpeg"){
+        alert('File Not accepted');
+        this.$refs.file.value = ''
+        this.src = null
+    }
+    else if(size > 1024000){
+        alert('Size of This File is Big than 1024 Ko');
+        this.$refs.file.value = ''
+        this.src = null 
+    }
+},
+
 }
 }
 </script>

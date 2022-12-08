@@ -9,7 +9,6 @@
                     @change="Search"
                     class="focus:ring-0 outline-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200" style="height:95%"
                 />
-                <i class="absolute dark dark:text-gray-400 top-2 right-2 fa-solid fa-magnifying-glass"></i>
             </div>
             <BaseButton v-if="role" @click="openPopUpAdd()">Add New Propriétaire</BaseButton>
             
@@ -92,7 +91,7 @@ export default {
             popupUpdate : false,
             keyword: '',
             dataStore: [],
-            proprietaireId : 1,
+            proprietaireId : null,
             noData : true
         }
     },
@@ -133,7 +132,7 @@ export default {
             this.popupAdd = true
         },
         openPopUpUpdate(id){
-            this.proprietaireId = id
+            this.proprietaireId = id;
             this.popupUpdate = true
         },
 

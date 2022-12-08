@@ -41,6 +41,11 @@ class ParcelleController extends Controller
         return $Parcelles;
     }
 
+    public function getSpecificParcelle($id){
+        $Parcelle = Parcelle::find($id);
+        return $Parcelle;
+    }
+
     public function deleteParcelle($id)
     {
         $Parcelle = Parcelle::find($id);

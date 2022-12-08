@@ -40,28 +40,28 @@
             </table>
 
             <nav aria-label="Page navigation example">
-			<ul class="flex gap-4">
-				<li class="page-item">
-					<button 
-                    type="button" 
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
-                    :disabled="(page == 1)" 
-                    @click="page--"
-                    > Previous </button>
-				</li>
-				<li class="flex gap-2">
-					<button type="button" 
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white" 
-                    v-for="pageNumber in pages.slice(page-1, page+5)" @click="page = pageNumber"> {{pageNumber}} </button>
-				</li>
-				<li class="page-item">
-					<button type="button" @click="page++" :disabled="(page > pages.length-1)" 
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
-                    > Next </button>
-				</li>
-			</ul>
-		</nav>
-        </div>
+                <ul class="flex gap-4">
+                    <li class="page-item">
+                        <button 
+                        type="button" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+                        :disabled="(page == 1)" 
+                        @click="page--"
+                        > Previous </button>
+                    </li>
+                    <li class="flex gap-2">
+                        <button type="button" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white" 
+                        v-for="pageNumber in pages.slice(page-1, page+5)" @click="page = pageNumber"> {{pageNumber}} </button>
+                    </li>
+                    <li class="page-item">
+                        <button type="button" @click="page++" :disabled="(page > pages.length-1)" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+                        > Next </button>
+                    </li>
+                </ul>
+            </nav>
+            </div>
 
 
 
@@ -95,8 +95,6 @@ export default {
             villageId : 1,
             noData : true,
 
-
-            posts : [''],
 			page: 1,
 			perPage: 5,
 			pages: [],		

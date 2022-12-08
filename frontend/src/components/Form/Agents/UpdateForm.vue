@@ -1,5 +1,5 @@
 <template >
-    <div v-if="popup" class="bg-zinc-900/50 absolute w-full h-full" style="left: 0;margin: 0;">
+    <div v-if="popup" class="bg-zinc-900/50 top-0 absolute w-full h-full" style="left: 0;margin: 0;">
 <div v-if="popup" class="absolute top-0 w-2/5 p-1 bg-white dark:bg-dark-header rounded-2xl flex content-center justify-center pt-5" style="left: 25%; top: 3%;">
     <ParentTransition appear :visibility="true" class="w-4/5">
 
@@ -125,7 +125,9 @@ return{
 },
 
 mounted(){
+    this.getOldData(this.id)
 },
+
 
 methods:{
 closePopup(){
@@ -149,6 +151,26 @@ update_User(id){
         this.$router.go();
     });
 
+},
+
+getOldData(id){
+    console.log(id)
+    const options = {
+        url: 'http://127.0.0.1:8000/api/v1/getAgent/'+id,
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+    };
+
+    axios(options)
+    .then(response => {
+        this.form.username = response.data.username;
+        this.form.name = response.data.name;
+        this.form.email = response.data.email;
+        this.form.role = response.data.role;
+    });
 }
 }
 }

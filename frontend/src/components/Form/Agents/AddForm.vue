@@ -1,5 +1,5 @@
 <template >
-    <div v-if="popup" class="bg-zinc-900/50 absolute top-0 w-full h-full" style="left: 0;margin: 0;">
+    <div v-if="popup" class="bg-zinc-900/50 top-0 absolute w-full h-full" style="left: 0;margin: 0;">
 <div v-if="popup" class="absolute top-0 w-2/5 p-1 bg-white dark:bg-dark-header rounded-2xl flex content-center justify-center pt-5" style="left: 25%; top: 3%;">
     <ParentTransition appear :visibility="true" class="w-4/5">
 

@@ -48,7 +48,8 @@ Route::put('/v1/updateParcelle/{id}', [ParcelleController::class, 'updateParcell
 // Villages Router
 Route::post('/v1/newVillage', [VillageController::class, 'newVillage']);
 Route::get('/v1/getVillages', [VillageController::class, 'getVillages']);
-Route::delete('/v1/deleteVillage/{id}', [VillageController::class, 'deleteVillage']);   
+Route::get('/v1/getVillage/{id}', [VillageController::class, 'getSpecificVillage']);
+Route::delete('/v1/deleteVillage/{id}', [VillageController::class, 'deleteVillage']);
 Route::put('/v1/updateVillage/{id}', [VillageController::class, 'updateVillage']);
 
 // proprietaires Router
@@ -56,7 +57,7 @@ Route::post('/v1/newProprietaire', [ProprietaireController::class, 'newProprieta
 Route::get('/v1/getProprietaires', [ProprietaireController::class, 'getProprietaires']);
 Route::get('/v1/getProprietaire/{id}', [ProprietaireController::class, 'getSpecificProprietaire']);
 Route::delete('/v1/deleteProprietaire/{id}', [ProprietaireController::class, 'deleteProprietaire']);   
-Route::put('/v1/updateProprietaire/{id}', [ProprietaireController::class, 'updateProprietaire']);
+Route::post('/v1/updateProprietaire/{id}', [ProprietaireController::class, 'updateProprietaire']);
 
 
 //Update User Profile

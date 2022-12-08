@@ -4,7 +4,6 @@
         </PageHeader>
         <div class="border-b border-gray-200 dark:border-dark-body flex justify-center w-full">
             <BaseCard class="w-full">
-
                 <FormKit type="form" v-model="data" @submit="getUpdatedData"
                 submit-label="Save"
                 :submit-attrs="{
@@ -88,11 +87,6 @@
                             </div>
                             <div class="col-span-3 sm:col-span-1">
                             </div>
-
-                
-                        
-
-
                             <div class="col-span-3 sm:col-span-1" v-if="!update">
                                 <div>
                                     <BaseLabel v-if="true">Password</BaseLabel>
@@ -169,6 +163,11 @@
                                     <FormKit
                                     type="submit"
                                     label="Save"
+                                    :config="{
+                                    classes: {
+                                        input: 'py-0 focus:ring-0 outline-0 p-2 dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-gray-300 dark:border-gray-700 dark:text-gray-200',
+                                    },
+                                    }"
                                 />
                                 </BaseButton>
                                 
@@ -183,83 +182,79 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
-    name: 'Pracelle',
+	name: "Pracelle",
 
-    data(){
-        return{
-            update: false,
-            user_id: sessionStorage.getItem('id'),
-            infos : {
-                name : "",
-                username : "",
-                email : "",
-                old_password : "",
-                password : "",
-                password_confirmation : "",
-            },
-            data:null,
-            passRequired : false
-        }
-    },
+	data() {
+		return {
+			update: false,
+			user_id: sessionStorage.getItem("id"),
+			infos: {
+				name: "",
+				username: "",
+				email: "",
+				old_password: "",
+				password: "",
+				password_confirmation: ""
+			},
+			data: null,
+			passRequired: false
+		};
+	},
 
-    mounted(){
-        this.getUserInfo();
-    },
+	mounted() {
+		this.getUserInfo();
+	},
 
-    methods:{
-        Update(){
-            this.update = true
-        },
-        Cancel(){
-            this.update = false;
-            this.$router.go();
-        },
-        getUserInfo(){
-            const options = {
-                url: 'http://127.0.0.1:8000/api/v1/getProfile/'+this.user_id,
-                method: 'GET',
-            };
+	methods: {
+		Update() {
+			this.update = true;
+		},
+		Cancel() {
+			this.update = false;
+			this.$router.go();
+		},
+		getUserInfo() {
+			const options = {
+				url: "http://127.0.0.1:8000/api/v1/getProfile/" + this.user_id,
+				method: "GET"
+			};
 
-            axios(options)
-            .then(response => {
-                console.log(response);
-                if(response.status === 200){
-                    this.infos = response.data;
-                    this.infos["old_password"] = "";
-                    this.infos["password"] = "";
-                    this.infos["password_confirmation"] = "";
-                }
-            });
+			axios(options).then(response => {
+				console.log(response);
+				if (response.status === 200) {
+					this.infos = response.data;
+					this.infos["old_password"] = "";
+					this.infos["password"] = "";
+					this.infos["password_confirmation"] = "";
+				}
+			});
+		},
+		getUpdatedData() {
+			if (this.data.old_password == "") {
+				this.data.old_password = "unchanged";
+			}
 
-        },
-        getUpdatedData(){
-            if(this.data.old_password == ""){
-                this.data.old_password = "unchanged"
-            }
+			const options = {
+				url: "http://127.0.0.1:8000/api/v1/updateProfile/" + this.user_id,
+				method: "PUT",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json;charset=UTF-8"
+				},
+				data: this.data
+			};
 
-            const options = {
-                url: 'http://127.0.0.1:8000/api/v1/updateProfile/'+this.user_id,
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json;charset=UTF-8'
-                },
-                data: this.data
-            };
-
-            axios(options)
-            .then(response => {
-                console.log(response);
-                if(response.status === 200){
-                    this.$router.go();
-                }
-            });
-        },
-
-       
-    }
-}
+			axios(options).then(response => {
+				console.log(response);
+				if (response.status === 200) {
+					this.$router.go();
+				}
+			});
+		}
+	}
+};
 </script>
+
 

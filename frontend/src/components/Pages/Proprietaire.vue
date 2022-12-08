@@ -16,7 +16,7 @@
 
         
 
-        <div class="border-b border-gray-200 dark:border-dark-body">
+        <div class="border-b border-gray-200 dark:border-dark-body flex justify-center flex-col items-center gap-2">
             <table class="relative rounded-table w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-neutral-700">
                     <tr>
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-dark-header divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr v-for="item in dataStore" class="">
+                    <tr v-for="item in displayedProp" class="">
                         <td class="table-data" v-html="highlightMatches(item.nom)">
                         </td>
                         <td class="table-data" v-html="highlightMatches(item.prenom)">
@@ -51,6 +51,30 @@
                             No data found
                 </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="flex gap-4">
+                    <li class="page-item">
+                        <button 
+                        type="button" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+                        :disabled="(page == 1)" 
+                        @click="page--"
+                        > Previous </button>
+                    </li>
+                    <li class="flex gap-2">
+                        <button type="button" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white" 
+                        v-for="pageNumber in pages.slice(page-1, page+5)" @click="page = pageNumber"> {{pageNumber}} </button>
+                    </li>
+                    <li class="page-item">
+                        <button type="button" @click="page++" :disabled="(page > pages.length-1)" 
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium border-b border-gray-200 dark:border-dark-body rounded-lg hover:bg-gray-100 hover:text-gray-700 bg-white dark:bg-dark-header text-gray-500 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+                        > Next </button>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
 
 
@@ -92,7 +116,11 @@ export default {
             keyword: '',
             dataStore: [],
             proprietaireId : null,
-            noData : true
+            noData : true,
+
+            page: 1,
+			perPage: 5,
+			pages: [],		
         }
     },
 
@@ -126,7 +154,9 @@ export default {
                 if(this.data.length != 0){
                     this.noData = false ;
                 }
+                this.setPages();
             });
+            
         },
         openPopUpAdd(){
             this.popupAdd = true
@@ -162,12 +192,38 @@ export default {
             });
         },
         highlightMatches(text) {
-        const matchExists = text.toLowerCase().includes((this.keyword+ '').toLowerCase());
-        if (!matchExists) return text;
-        const re = new RegExp(this.keyword, "ig");
-        return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
+            const matchExists = text.toLowerCase().includes((this.keyword+ '').toLowerCase());
+            if (!matchExists) return text;
+            const re = new RegExp(this.keyword, "ig");
+            return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
         },
-    }
+
+
+        setPages () {
+			let numberOfPages = Math.ceil(this.dataStore.length / this.perPage);
+			for (let index = 1; index <= numberOfPages; index++) {
+				this.pages.push(index);
+			}
+		},
+		paginate (villages) {
+			let page = this.page;
+			let perPage = this.perPage;
+			let from = (page * perPage) - perPage;
+			let to = (page * perPage);
+			return  villages.slice(from, to);
+		}
+    },
+
+    computed: {
+		displayedProp () {
+			return this.paginate(this.dataStore);
+		}
+	},
+	filters: {
+		trimWords(value){
+			return value.split(" ").splice(0,20).join(" ") + '...';
+		}
+	}
 }
 </script>
 

@@ -19,4 +19,31 @@
     @apply px-6 py-3 text-sm text-gray-900 dark:text-gray-300;
 }
 
+.formkit-file-list , .formkit-no-files{
+    @apply text-gray-400  
+}
+
+.formkit-file-item{
+    @apply flex gap-1
+}
+
+.formkit-file-remove{
+    @apply hover:text-zinc-600
+}
+
+.formkit-inner{
+    @apply flex items-center gap-3 w-full
+}
+
+.formkit-wrapper{
+    @apply flex w-full
+}
+
+.formkit-options{
+    @apply flex gap-3
+}
+
+
 @tailwind utilities;
+
+

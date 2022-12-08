@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Photo_identite;
 use App\Models\Proprietaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProprietaireController extends Controller
 {
@@ -23,20 +25,19 @@ class ProprietaireController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-     
+
     public function newProprietaire(Request $request)
     {
         // Save Photo in locally folder 
-        if($request->hasFile('src')){
+        if ($request->hasFile('src')) {
             $file = $request->file('src');
             $numero_identite = $request->numero_identite;
-            $file_name = $numero_identite. '_' . $file->getClientOriginalName(); 
+            $file_name = $numero_identite . '_' . $file->getClientOriginalName();
             $file->move(public_path('Photos_identite'), $file_name);
-
-        }else{
-            return response()->json($request->src,400);
+        } else {
+            return response()->json("Problem", 400);
         }
-        
+
         // Save data to database
         $input = $request->all();
         $Proprietaire = Proprietaire::create($input);
@@ -52,7 +53,7 @@ class ProprietaireController extends Controller
         return response()->json($response, 200);
     }
 
-    public function getProprietaires(Proprietaire $Proprietaire)
+    public function getProprietaires(Proprietaire $Proprietaires)
     {
         $Proprietaires = Proprietaire::all();
         return $Proprietaires;
@@ -75,28 +76,27 @@ class ProprietaireController extends Controller
         return response()->json($response, 200);
     }
 
-    public function updateProprietaire(Request $request, $id){
-      
-        $input = $request->all();
+    public function updateProprietaire(Request $request, $id)
+    {
 
-        // Find Proprietaire
         $Proprietaire = Proprietaire::find($id);
-
-        // Update Proprietaire table
-        $Proprietaire->nom = $input['nom'];
-        $Proprietaire->prenom = $input['prenom'];
-        $Proprietaire->sexe = $input['sexe'];
-        $Proprietaire->nationalite = $input['nationalite'];
-        $Proprietaire->type_identite = $input['type_identite'];
-        $Proprietaire->adresse = $input['adresse'];
-        $Proprietaire->update();
-
+        if ($request->hasFile('src')) {    
+            $file = $request->file('src');
+            $numero_identite = $request->numero_identite;
+            $file_name = $numero_identite . '_' . $file->getClientOriginalName();
+            $file->move(public_path('Photos_identite'), $file_name);
+            $photo = Photo_identite::where('proprietaire_id', $Proprietaire->id)->first();
+            File::delete('Photos_identite/' . $photo->src);
+            $photo->src = $file_name;
+            $photo->update();
+        } else {
+            return response()->json($request->src, 400);
+        }
+        $Proprietaire->update($request->all());
         $response = [
             'success' => true,
             'message' => "Proprietaire Updated Seccusfuly"
         ];
         return response()->json($response, 200);
-    } 
-
-    
+    }
 }

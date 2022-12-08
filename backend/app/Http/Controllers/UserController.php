@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -33,15 +34,15 @@ class UserController extends Controller
 
     public function deleteAgent($id)
     {
-       $user = User::find($id);
-       $user->delete();
-       return $user;
+        $user = User::find($id);
+        $user->delete();
+        return $user;
     }
 
     public function updateAgent(Request $request, $id)
     {
         // echo "update";
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'min:3'],
             'email' => ['required', 'string', 'email', 'max:255'],
@@ -49,7 +50,7 @@ class UserController extends Controller
             'role' => ['required'],
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             $response = [
                 'success' => false,
                 'message' => $validator->errors()
@@ -63,7 +64,7 @@ class UserController extends Controller
         $agent->email = $input['email'];
         $agent->username = $input['username'];
         $agent->role = $input['role'];
-        if($input['password'] != "unchanged"){    
+        if ($input['password'] != "unchanged") {
             $input['password'] = bcrypt($input['password']);
             $agent->password = $input['password'];
         }
@@ -75,13 +76,14 @@ class UserController extends Controller
         return response()->json($response, 200);
     }
 
-    public function updateProfile(Request $request, $id){
+    public function updateProfile(Request $request, $id)
+    {
         $user = User::find($id);
         $input = $request->all();
         $hash = $user->password;
 
 
-        if($input['old_password'] == "unchanged"){ 
+        if ($input['old_password'] == "unchanged") {
             $user->name = $input['name'];
             $user->email = $input['email'];
             $user->username = $input['username'];
@@ -91,11 +93,11 @@ class UserController extends Controller
                 'message' => "Profile Infos Updated Seccusfuly"
             ];
             return response()->json($response, 200);
-        }else{
+        } else {
             if (password_verify($input["old_password"], $hash)) {
                 $user->name = $input['name'];
                 $user->email = $input['email'];
-                $user->username = $input['username'];    
+                $user->username = $input['username'];
                 $user->password = bcrypt($input['password']);
                 $user->update();
                 $response = [
@@ -103,7 +105,7 @@ class UserController extends Controller
                     'message' => "Profile Infos Updated Seccusfuly"
                 ];
                 return response()->json($response, 200);
-            }else{
+            } else {
                 $response = [
                     'success' => false,
                     'message' => "Invalid Password"
@@ -111,10 +113,10 @@ class UserController extends Controller
                 return response()->json($response, 400);
             }
         }
-        
     }
 
-    public function getProfile($id){
+    public function getProfile($id)
+    {
         $user = User::find($id);
         return $user;
     }

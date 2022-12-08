@@ -121,7 +121,7 @@
                 >
                 <div class="space-y-6 flex flex-col gap-y-2 content-center justify-center py-5">
                     
-                    <h1 class="dark dark:text-gray-400 text-center text-xl font-bold leading-7 sm:text-2xl sm:truncate">Add New Parcelle</h1>
+                    <h1 class="dark dark:text-gray-400 text-center text-xl font-bold leading-7 sm:text-2xl sm:truncate">Update Parcelle</h1>
 
                 <div class="flex w-100 justify-between">
                     <div>
@@ -251,7 +251,7 @@
                 <BaseButton  block>
                     <FormKit
                         type="submit"
-                        label="Save"
+                        label="Update"
                         :classes="{
                             input: 'w-full m-0 p-0',
                         }"

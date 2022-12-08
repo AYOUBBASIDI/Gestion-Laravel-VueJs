@@ -3,28 +3,55 @@
 <div v-if="popup" class="absolute w-2/5 p-1 bg-white dark:bg-dark-header rounded-2xl flex content-center justify-center pt-5" style="left: 25%; top: 3%;">
     <ParentTransition appear :visibility="true" class="w-4/5">
 
-    <form v-on:submit.prevent="add_Village">
+        <FormKit type="form" v-model="data" @submit="add_Village"
+                submit-label="Save"
+                :submit-attrs="{
+                    inputClass: 'hidden',
+                }"
+                :config="{
+                        classes: {
+                            input: 'focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200',
+                            help: 'text-xs text-gray-500',
+                            message: 'text-red-500 text-xs',
+                        },
+                        }"
+                
+                >
         <div class="space-y-6 flex flex-col gap-y-2 content-center justify-center py-5">
             
             <h1 class="dark dark:text-gray-400 text-center text-xl font-bold leading-7 sm:text-2xl sm:truncate">Add New Village</h1>
 
         <div>
                 <BaseLabel>Nom</BaseLabel>
-                <div class="mt-1">
-                    <input
-                        type="text" 
-                        name="nom" 
-                        v-model="form.nom"
-                        autofocus 
-                        class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                <div class="mt-1 w-full">
+                    <FormKit
+                        type="text"
+                        name="nom"
+                        validation="required"
+                        :config="{
+                        classes: {
+                            input: 'focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200',
+                            help: 'text-xs text-gray-500',
+                            message: 'text-red-500 text-xs',
+                        },
+                        }"
                     />
+                    
                 </div>
                 <FormError :error="error" />
         </div>
 
-        <BaseButton block>Save</BaseButton>
+        <BaseButton block>
+            <FormKit
+                type="submit"
+                label="Save"
+                :classes="{
+                    input: 'w-full m-0 p-0',
+                }"
+            />
+        </BaseButton>
 </div>
-    </form>
+        </FormKit>
     </ParentTransition>
     <div v-on:click="closePopup()" class="dark h-0 dark:text-gray-400 cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
@@ -44,11 +71,11 @@ return{
     form: {
         nom : null,
     },
+    data:null
 }
 },
 
 mounted(){
-
 },
 
 methods:{
@@ -65,7 +92,7 @@ add_Village(){
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
         },
-        data: this.form
+        data: this.data
     };
 
     axios(options)

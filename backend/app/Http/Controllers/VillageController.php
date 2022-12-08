@@ -41,6 +41,12 @@ class VillageController extends Controller
         return $Villages;
     }
 
+    public function getSpecificVillage($id)
+    {
+        $Proprietaire = Village::find($id);
+        return $Proprietaire;
+    }
+
     public function deleteVillage($id)
     {
         $Village = Village::find($id);

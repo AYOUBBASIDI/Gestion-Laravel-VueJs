@@ -3,7 +3,19 @@
 <div v-if="popup" class="absolute top-0 w-2/5 p-1 bg-white dark:bg-dark-header rounded-2xl flex content-center justify-center pt-5" style="left: 25%; top: 3%;">
     <ParentTransition appear :visibility="true" class="w-4/5">
 
-    <form v-on:submit.prevent="update_Proprietaire(id)">
+        <FormKit type="form" v-model="data" @submit="update_Proprietaire(id)"
+                submit-label="Save"
+                :submit-attrs="{
+                    inputClass: 'hidden',
+                }"
+                :config="{
+                classes: {
+                    input: 'focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200',
+                    help: 'text-xs text-gray-500',
+                    message: 'text-red-500 text-xs',
+                },
+                }"
+                >
         <div class="space-y-6 flex flex-col gap-y-2 content-center justify-center py-5">
             
             <h1 class="dark dark:text-gray-400 text-center text-xl font-bold leading-7 sm:text-2xl sm:truncate">Update Propriétaire</h1>
@@ -12,28 +24,25 @@
             <div>
                 <BaseLabel>Nom</BaseLabel>
                 <div class="mt-1">
-                    <input
-                        type="text" 
-                        name="nom" 
+                    <FormKit
                         v-model="form.nom"
-                        autofocus 
-                        class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                        type="text"
+                        name="nom"
+                        validation="required"
                     />
                 </div>
-                <FormError :error="error" />
             </div>
             <div>
                <BaseLabel>Prénom</BaseLabel>
                 <div class="mt-1">
-                    <input
-                        type="text" 
-                        name="prenom" 
+                    <FormKit
                         v-model="form.prenom"
-                        autofocus 
-                        class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                        type="text"
+                        name="prenom"
+                        validation="required"
                     />
                 </div>
-                <FormError :error="error" />
+
             </div>
 
 
@@ -43,44 +52,33 @@
         <div class="flex w-100 justify-between">
             <div>
                 <BaseLabel>Sexe</BaseLabel>
-            <div class="mt-1">
-                <label for="sexe" class="dark dark:text-gray-400">
-                    <input
-                        type="radio" 
-                        name="sexe" 
-                        v-model="form.sexe"
-                        autofocus 
-                        value="Homme"
-                        style="width: 6px;height: 6px;color: #ffffff;outline: auto; cursor: pointer;"
-                    /> Homme
-                    </label>
-                    &nbsp;
-                    <label for="sexe" class="dark dark:text-gray-400">
-                    <input
-                        type="radio" 
-                        name="sexe" 
-                        v-model="form.sexe"
-                        autofocus 
-                        value="Femme"
-                        style="width: 6px;height: 6px;color: #ffffff;outline: auto; cursor: pointer;"
-                    /> Femme
-                </label>
+                <div class="mt-1  dark dark:text-gray-400">
+                    <FormKit
+                    type="radio"
+                    name="sexe"
+                    v-model="form.sexe"
+                    :options="['Homme', 'Femme']"
+                    validation="required"
+                    :config="{
+                        classes: {
+                            input: 'w-2.5 h-2.5 flex flex-column',
+                            message: 'text-red-500 text-xs',
+                        }
+                    }"
+                    />
             </div>
-            <FormError :error="error" />
             </div>
             
             <div>
                 <BaseLabel>Nationnalité</BaseLabel>
             <div class="mt-1">
-                <input
+                <FormKit
                     v-model="form.nationalite"
-                    type="text" 
-                    name="Nationnalité" 
-                    autofocus 
-                    class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                    type="text"
+                    name="nationalite"
+                    validation="required"
                 />
             </div>
-            <FormError :error="error" />
             </div>
             
 
@@ -92,62 +90,89 @@
                     <div style="width: 47%;">
                        <BaseLabel>Type d'identité</BaseLabel>
                         <div class="mt-1">
-                            <select 
-                            class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
-                            name="type_identite"
-                            v-model="form.type_identite"
+                            <FormKit
+                                type="select"
+                                name="type_identite"
+                                validation="required"
+                                v-model="form.type_identite"
+                                :validation-messages="{
+                                    required: 'Type d’identite is required',
+                                }"
                             >
-                                <option v-for="item in types" :value='item' >{{item}}</option>
-                            </select>
+                                <option 
+                                    v-for="item in types" 
+                                    :value="item"
+                                    class="bg-white dark:bg-dark-header"
+                                    >
+                                    {{item}}
+                                </option>
+                            </FormKit>
+                            <pre wrap>{{ value }}</pre>
                         </div>
-                        <FormError :error="error" /> 
                     </div>
 
                     <div>
                         <BaseLabel>Numéro d'identité</BaseLabel>
                         <div class="mt-1">
-                            <input
-                                type="text" 
-                                name="numero_identite" 
+                            <FormKit
                                 v-model="form.numero_identite"
-                                autofocus 
-                                class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                                type="text"
+                                name="numero_identite"
+                                validation="required"
                             />
                         </div>
-                        <FormError :error="error" />
+        
                     </div>                    
                 </div> 
-
         <div>
             <BaseLabel>Photos de la pièce d'identité</BaseLabel>
             <div class="mt-1">
-                <input
-                    type="file" 
-                    name="src" 
-                    autofocus 
-                    class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                <FormKit
+                    type="file"
+                    name="src"
+                    ref="file"
+                    accept=".png,.jpg,.jpeg"
+                    @change="checkFile($event)"
+                    validation="required"
+                    style="width: 32%;"
+                    :validation-messages="{
+                        required: 'Pièce d’identite is required',
+                    }"
+                    :config="{
+                        classes: {
+                            input: 'dark dark:text-gray-400 file:mr-5 file:py-2 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700',
+                            message: 'text-red-500 text-xs',
+                        }
+                    }"
+                    multiple
                 />
+        
             </div>
-            <FormError :error="error" />
         </div>
 
         <div>
             <BaseLabel>Adresse</BaseLabel>
             <div class="mt-1">
-                <input
-                    type="text" 
-                    name="adresse" 
-                    autofocus 
+                <FormKit
                     v-model="form.adresse"
-                    class="focus:ring-0 focus:border-primary dark:focus:border-gray-200 bg-inherit block w-full sm:text-sm border-0 border-b-2 border-gray-300 dark:border-gray-700 dark:text-gray-200"
+                    type="text"
+                    name="adresse"
+                    validation="required"
                 />
             </div>
-            <FormError :error="error" />
         </div>
-        <BaseButton block>Update</BaseButton>
+        <BaseButton block>
+            <FormKit
+                type="submit"
+                label="Update"
+                :classes="{
+                    input: 'w-full m-0 p-0',
+                }"
+            />
+        </BaseButton>
 
 </div>
-    </form>
+        </FormKit>
     </ParentTransition>
     <div v-on:click="closePopup()" class="dark h-0 dark:text-gray-400 cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
@@ -183,9 +208,10 @@ return{
         type_identite : null,
         numero_identite : null,
         adresse : null,
-        src : "/images/id1128"
+        src : null
     },
-    types:["CIN","Passeport","Permis","Carte de resident"]
+    types:["CIN","Passeport","Permis","Carte de resident"],
+    data : null
 }
 },
 
@@ -200,19 +226,23 @@ closePopup(){
 },
 
 update_Proprietaire(id){
-    const options = {
-        url: 'http://127.0.0.1:8000/api/v1/updateProprietaire/'+id,
-        method: 'PUT',
+    console.log(this.form.src)
+    var formData = new FormData();
+    formData.append("nom", this.form.nom);
+    formData.append("prenom", this.form.prenom);
+    formData.append("sexe", this.form.sexe);
+    formData.append("nationalite", this.form.nationalite);
+    formData.append("type_identite", this.form.type_identite);
+    formData.append("adresse", this.form.adresse);
+    formData.append("numero_identite", this.form.numero_identite);
+    formData.append("src", this.form.src);
+    axios.post('http://127.0.0.1:8000/api/v1/updateProprietaire/'+id , formData, {
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8'
-        },
-        data: this.form
-    };
-
-    axios(options)
+            'Content-Type': 'multipart/form-data'
+        }
+    })
     .then(response => {
-        this.$router.go();
+        // this.$router.go();
     });
 
 },
@@ -226,7 +256,6 @@ getOldData(id){
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
         },
-        data: this.form
     };
 
     axios(options)
@@ -241,7 +270,25 @@ getOldData(id){
         this.form.adresse = response.data.adresse;
         this.form.numero_identite = response.data.numero_identite;
     });
-}
+},
+
+
+checkFile(e){
+    this.form.src = e.target.files[0];
+    const type = this.form.src.type;
+    const size = this.form.src.size;
+    if(type != "image/png" && type != "image/jpg" && type != "image/jpeg"){
+        alert('File Not accepted');
+        this.$refs.file.value = ''
+        this.src = null
+    }
+    else if(size > 1024000){
+        alert('Size of This File is Big than 1024 Ko');
+        this.$refs.file.value = ''
+        this.src = null 
+    }
+},
+
 }
 }
 </script>

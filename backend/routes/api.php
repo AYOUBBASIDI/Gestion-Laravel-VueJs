@@ -33,6 +33,7 @@ Route::post('/v1/register', [AuthController::class, 'register']);
     
 // Users Router
 Route::get('/v1/getAgents', [UserController::class, 'getAgents']);
+Route::get('/v1/getAgent/{id}', [UserController::class, 'getAgent']);
 Route::delete('/v1/deleteAgent/{id}', [UserController::class, 'deleteAgent']);   
 Route::put('/v1/updateAgent/{id}', [UserController::class, 'updateAgent']);
 

@@ -185,8 +185,6 @@ export default {
 				axios(options).then(response => {
 					this.getParcelles();
 				});
-			} else {
-				text = "You canceled!";
 			}
 		},
 		Search() {

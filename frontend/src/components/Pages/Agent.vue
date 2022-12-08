@@ -169,14 +169,16 @@ export default {
 		},
 
 		DeleteAgent(id) {
-			const options = {
-				url: "http://127.0.0.1:8000/api/v1/deleteAgent/" + id,
-				method: "DELETE"
-			};
+            if (confirm("Are You sure you want to delete this Parcelle") == true) {
+				const options = {
+                    url: "http://127.0.0.1:8000/api/v1/deleteAgent/" + id,
+                    method: "DELETE"
+                };
 
-			axios(options).then(response => {
-				this.getUsers();
-			});
+                axios(options).then(response => {
+                    this.getUsers();
+                });
+			}
 		},
 
 		Search() {

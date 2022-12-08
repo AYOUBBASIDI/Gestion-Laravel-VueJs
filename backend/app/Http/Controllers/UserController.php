@@ -31,6 +31,10 @@ class UserController extends Controller
         return $Agents;
     }
 
+    public function getAgent($id){
+        $user = User::find($id);
+        return $user;
+    }
 
     public function deleteAgent($id)
     {

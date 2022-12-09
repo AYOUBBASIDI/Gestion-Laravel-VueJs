@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Village;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VillageController extends Controller
 {
@@ -25,6 +26,20 @@ class VillageController extends Controller
      
     public function newVillage(Request $request)
     {
+
+        $validator = Validator::make($request->all(),[
+            'nom' => ['required', 'unique:villages' , 'regex:/^[a-zA-Z]+$/u' ,'min:3'],
+        ]);
+
+
+        if($validator->fails()){
+            $response = [
+                'success' => false,
+                'message' => $validator->errors()
+            ];
+            return response()->json($response, 400);
+        }
+
         $input = $request->all();
         $Village = Village::create($input);
 

@@ -6,6 +6,7 @@ use App\Models\Photo_identite;
 use App\Models\Proprietaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ProprietaireController extends Controller
 {
@@ -28,6 +29,28 @@ class ProprietaireController extends Controller
 
     public function newProprietaire(Request $request)
     {
+
+        $AcceptedTypes=["Cin", "Passeport", "Permis", "Carte de résident"];
+
+        $validator = Validator::make($request->all(),[
+            'nom' => ['required'],
+            'prenom' => ['required'],
+            'sexe' => ['required'],
+            'nationalite' => ['required'],
+            'type_identite' => ['required','exists:'.$AcceptedTypes],
+            'numero_identite' => ['required','unique:proprietaires'],
+            'adresse' => ['required']
+        ]);
+
+
+        if($validator->fails()){
+            $response = [
+                'success' => false,
+                'message' => $validator->errors()
+            ];
+            return response()->json($response, 400);
+        }
+
         // Save Photo in locally folder 
         if ($request->hasFile('src')) {
             $file = $request->file('src');

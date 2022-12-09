@@ -163,17 +163,11 @@ export default {
             });
         },
         highlightMatches(text) {
-        const matchExists = text.toLowerCase().includes((this.keyword+ '').toLowerCase());
-        if (!matchExists) return text;
-        const re = new RegExp(this.keyword, "ig");
-        return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
+            const matchExists = text.toLowerCase().includes((this.keyword+ '').toLowerCase());
+            if (!matchExists) return text;
+            const re = new RegExp(this.keyword, "ig");
+            return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
         },
-
-
-
-
-
-
 
 		setPages () {
 			let numberOfPages = Math.ceil(this.dataStore.length / this.perPage);

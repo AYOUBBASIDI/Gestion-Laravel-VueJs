@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Parcelle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ParcelleController extends Controller
 {
@@ -26,6 +27,25 @@ class ParcelleController extends Controller
     public function newParcelle(Request $request)
     {
         $input = $request->all();
+
+        $validator = Validator::make($request->all(),[
+            'numero' => ['required',  'integer', 'unique:parcelles', ],
+            'proprietaire_id' => ['required', 'exists:proprietaires,id'],
+            'village_id' => ['required','exists:villages,id'],
+            'date_delimitation' => ['required'],
+            'user_id' => ['required'],
+            'signature' => ['required']
+        ]);
+
+
+        if($validator->fails()){
+            $response = [
+                'success' => false,
+                'message' => $validator->errors()
+            ];
+            return response()->json($response, 400);
+        }
+
         $Parcelle = Parcelle::create($input);
 
         $response = [

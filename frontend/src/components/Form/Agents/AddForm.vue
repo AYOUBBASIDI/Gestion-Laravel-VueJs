@@ -160,6 +160,9 @@ add_Proprietaire(){
     axios(options)
     .then(response => {
         this.$router.go();
+    }).catch((error) => {
+        var message = Object.values(error.response.data.message)[0][0];
+        alert(message);
     });
 }
 }

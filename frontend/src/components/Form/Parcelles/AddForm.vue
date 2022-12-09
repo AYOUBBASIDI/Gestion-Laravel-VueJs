@@ -221,10 +221,6 @@ export default {
 
         axios(options)
         .then(response => {
-            // response.data.map((item) => {
-            //     this.agentsOption.push({label:item.name, value:item.id});
-            // })
-            // console.log(this.agentsOption)
             this.agents = response.data
         });
     },
@@ -249,6 +245,9 @@ export default {
             axios(options)
             .then(response => {
                 this.$router.go();
+            }).catch((error) => {
+                var message = Object.values(error.response.data.message)[0][0];
+                alert(message);
             });
 
         }

@@ -76,17 +76,6 @@
             </nav>
 
         </div>
-
-
-
-
-
-
-
-
-
-
-
             <AddProprietaire v-if="popupAdd"></AddProprietaire>
             <UpdateProprietaire v-if="popupUpdate" :id="proprietaireId"></UpdateProprietaire>
 
